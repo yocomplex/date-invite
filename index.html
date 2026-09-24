@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f9eee8">
+  <meta name="description" content="A tiny invitation, made with love.">
+  <title>A little question for you 💌</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23f8d6ce'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='42'%3E%F0%9F%92%8C%3C/text%3E%3C/svg%3E">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,600,30,1;9..144,700,30,1&display=swap');
+    :root { color-scheme: light; --ink:#432d34; --muted:#806e73; --berry:#ae3f64; --berry-deep:#872c4e; --peach:#f8d6ce; --cream:#fffaf5; --line:#e8c8ca; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-width:280px; min-height:100svh; font-family:'DM Sans',system-ui,sans-serif; color:var(--ink); background:#f9eee8; overflow-x:hidden; }
+    body::before { content:""; position:fixed; inset:0; z-index:-2; background:radial-gradient(circle at 10% 8%,#ffe2d3 0 12%,transparent 37%),radial-gradient(circle at 93% 81%,#f5c9d2 0 8%,transparent 37%),#f9eee8; }
+    .doodle { position:fixed; z-index:-1; pointer-events:none; user-select:none; font-family:Georgia,serif; color:#d8a2a8; opacity:.58; }
+    .doodle.one { top:6%; left:5%; font-size:58px; transform:rotate(-16deg); } .doodle.two { right:7%; top:13%; font-size:62px; transform:rotate(17deg); } .doodle.three { left:9%; bottom:10%; font-size:80px; transform:rotate(11deg); } .doodle.four { right:8%; bottom:8%; font-size:50px; transform:rotate(-12deg); }
+    .shell { min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px 18px 20px; }
+    .card { width:min(100%,660px); min-height:560px; position:relative; padding:44px 52px 36px; border:1px solid #efdbd6; border-radius:32px; background:rgba(255,250,245,.95); box-shadow:0 28px 70px rgba(111,58,69,.11),0 4px 14px rgba(111,58,69,.05); overflow:hidden; }
+    .card::after { content:""; position:absolute; width:130px; height:130px; right:-65px; top:-65px; border:2px solid #f4d5d2; border-radius:50%; pointer-events:none; }
+    .topline { display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:11px; font-weight:700; letter-spacing:.17em; text-transform:uppercase; color:var(--berry); }
+    .progress { display:flex; gap:6px; margin:18px 0 42px; } .progress i { height:5px; flex:1; background:#f1e3e0; border-radius:5px; transition:background .25s; } .progress i.done { background:#c6637c; }
+    .screen { display:none; animation:rise .36s ease both; } .screen.active { display:block; } @keyframes rise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    .eyebrow { display:inline-block; color:var(--berry); font-size:12px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; margin:0 0 15px; }
+    h1,h2 { font-family:Fraunces,Georgia,serif; font-weight:700; letter-spacing:-.045em; line-height:1.11; margin:0; } h1 { font-size:clamp(43px,7vw,68px); max-width:520px; } h2 { font-size:clamp(37px,6vw,55px); max-width:510px; }
+    p { line-height:1.6; } .intro-copy { color:var(--muted); margin:18px 0 0; font-size:16px; }
+    .choices { position:relative; height:192px; margin-top:28px; border:1px dashed #edcfd0; background:linear-gradient(135deg,#fff7f0,#fff0ef); border-radius:22px; touch-action:manipulation; }
+    button { font:inherit; cursor:pointer; }
+    .pill { border:0; border-radius:100px; font-weight:700; padding:15px 25px; min-height:53px; transition:transform .18s,box-shadow .18s,background .18s; }
+    .pill:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 9px 20px rgba(126,46,76,.18); } .pill:focus-visible,.back:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #a84970; outline-offset:3px; }
+    .primary { background:var(--berry); color:white; box-shadow:0 6px 14px rgba(126,46,76,.16); } .primary:hover { background:var(--berry-deep); }
+    .yes { position:absolute; left:18%; top:68px; width:118px; z-index:2; } .no { position:absolute; left:65%; top:68px; min-width:91px; color:#6c5660; background:#fff; border:1px solid #e9d7d3; pointer-events:none; cursor:default; transition:left .15s ease-out,top .15s ease-out; box-shadow:0 4px 10px rgba(67,45,52,.05); }
+    .small { color:var(--muted); font-size:16px; margin:19px 0 26px; }
+    .actions { margin-top:28px; display:flex; gap:13px; align-items:center; flex-wrap:wrap; } .back { border:0; background:transparent; color:var(--muted); text-decoration:underline; text-underline-offset:4px; font-size:14px; padding:9px 2px; }
+    form { margin-top:28px; } label { display:block; font-size:13px; font-weight:700; color:var(--ink); margin:20px 0 9px; } input,select,textarea { display:block; width:100%; border:1px solid #e4cdd0; border-radius:15px; background:#fff; color:var(--ink); font:inherit; font-size:16px; padding:14px 16px; min-height:53px; } select { padding-right:36px; } textarea { min-height:145px; resize:vertical; line-height:1.5; } input:focus,select:focus,textarea:focus { border-color:#a84970; }
+    .hint { margin:9px 0 0; color:var(--muted); font-size:13px; } .hint em { color:var(--berry); font-style:normal; font-weight:700; }
+    .note { margin-top:25px; border:1px solid #ebd6d2; background:#fff4ef; border-radius:20px; padding:18px 20px; color:#6d4b55; font-size:14px; line-height:1.55; }
+    .summary { margin-top:22px; background:#fff6ee; border:1px dashed #dcafb2; border-radius:18px; padding:18px 20px; } .summary p { margin:6px 0; overflow-wrap:anywhere; font-size:14px; } .summary strong { color:var(--berry-deep); }
+    .micro { color:#9e838a; font-size:12px; margin:12px 0 0; } .status { min-height:22px; margin:12px 0 0; color:var(--berry-deep); font-size:14px; font-weight:700; }
+    footer { padding:21px 8px 0; text-align:center; color:#8c6d74; font-size:12px; letter-spacing:.06em; }
+    .confetti { display:inline-block; font-size:37px; transform:rotate(-12deg); margin-bottom:16px; }
+    @media(max-width:600px) { .shell { justify-content:flex-start; padding:14px 12px 20px; } .card { min-height:calc(100svh - 70px); padding:30px 25px 28px; border-radius:25px; } .progress { margin-bottom:43px; } .doodle { display:none; } .yes { left:10%; } .no { left:65%; } .choices { height:205px; } .actions .primary { width:100%; } .actions .back { order:2; } }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; scroll-behavior:auto!important; } }
+  </style>
+</head>
+<body>
+  <span class="doodle one" aria-hidden="true">✳</span><span class="doodle two" aria-hidden="true">♡</span><span class="doodle three" aria-hidden="true">✿</span><span class="doodle four" aria-hidden="true">✳</span>
+  <div class="shell"><main class="card" aria-live="polite">
+    <div class="topline"><span>One little question 💌</span><span id="step-count">01 / 06</span></div>
+    <div class="progress" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+    <section class="screen active" id="intro" aria-labelledby="intro-title">
+      <span class="eyebrow">Okay, here goes...</span><h1 id="intro-title">Will you go on a date with me?</h1>
+      <p class="intro-copy">I made a whole website to ask you this. Totally normal behavior.</p>
+      <div class="choices" id="choices"><button class="pill primary yes" type="button" id="yes">Yes ♡</button><button class="pill no" type="button" id="no" disabled tabindex="-1" aria-label="No, impossible to select">No</button></div>
+    </section>
+
+    <section class="screen" id="surprise" aria-labelledby="surprise-title">
+      <span class="eyebrow">Plot twist</span><h2 id="surprise-title">WAIT, YOU ACTUALLY SAID YES? 😭</h2>
+      <p class="small">I was ready for you to say no</p>
+      <div class="note">Okay okay. I have a few very important questions for our date... 🌷</div>
+      <div class="actions"><button class="pill primary" type="button" data-next="schedule">yeah yeah continue next →</button></div>
+    </section>
+
+    <section class="screen" id="schedule" aria-labelledby="schedule-title">
+      <span class="eyebrow">The when</span><h2 id="schedule-title">So when are you free?</h2>
+      <p class="small">There just happens to be one very specific day in mind.</p>
+      <form id="schedule-form">
+        <label for="date">Pick a date</label><input id="date" name="date" type="date" min="2026-09-27" max="2026-09-27" required>
+        <p class="hint">Only <em>Sunday, September 27, 2026</em> is available ✨</p>
+        <label for="time">Pick a time</label><select id="time" name="time" required><option value="" selected disabled>Choose your adventure...</option><option value="4:00pm">4:00pm - You wanna get baked from the sun?</option><option value="5:00pm">5:00pm - We're still gonna get baked from the sun</option><option value="6:00pm">6:00pm - this is a good time especially to see that beautiful sunset</option><option value="7:00pm">7:00pm - I'm gonna get hangry</option></select>
+        <div class="actions"><button class="pill primary" type="submit">next page →</button><button class="back" type="button" data-next="surprise">← back</button></div>
+      </form>
+    </section>
+
+    <section class="screen" id="food" aria-labelledby="food-title">
+      <span class="eyebrow">The essentials</span><h2 id="food-title">What foods/drinks should we bring?</h2>
+      <p class="small">Tell me what you'd like me to bring. Requests are encouraged.</p>
+      <form id="food-form"><label for="food-answer">Your food and drink wishlist</label><textarea id="food-answer" name="food" placeholder="Snacks, drinks, your favorite treat..." maxlength="220" required></textarea>
+        <div class="actions"><button class="pill primary" type="submit">next page →</button><button class="back" type="button" data-next="schedule">← back</button></div>
+      </form>
+    </section>
+
+    <section class="screen" id="activity" aria-labelledby="activity-title">
+      <span class="eyebrow">The fun part</span><h2 id="activity-title">Do you have an activity you recommend we could do?</h2>
+      <p class="small">Anything you're in the mood for. I'm listening 👀</p>
+      <form id="activity-form"><label for="activity-answer">Your activity idea</label><textarea id="activity-answer" name="activity" placeholder="A walk, a game, an adventure..." maxlength="220" required></textarea>
+        <div class="actions"><button class="pill primary" type="submit">next page →</button><button class="back" type="button" data-next="food">← back</button></div>
+      </form>
+    </section>
+
+    <section class="screen" id="finale" aria-labelledby="finale-title">
+      <span class="confetti" aria-hidden="true">💖</span><div><span class="eyebrow">It's official</span></div><h2 id="finale-title">It's a date!</h2>
+      <p class="small" id="final-message"></p><p class="micro">no one could ever make something like this but me ;)</p>
+      <div class="summary" aria-label="Your plans"><p><strong>When:</strong> <span id="summary-when"></span></p><p><strong>Food & drinks:</strong> <span id="summary-food"></span></p><p><strong>Activity:</strong> <span id="summary-activity"></span></p></div>
+      <div class="actions"><button class="pill primary" type="button" id="copy">Copy plans & text me 💌</button><button class="back" type="button" data-next="activity">← edit plans</button></div><p class="status" id="copy-status" role="status" aria-live="polite"></p>
+    </section>
+  </main><footer>Made with love from BBB ♡</footer></div>
+  <script>
+    (() => {
+      'use strict';
+      const order = ['intro','surprise','schedule','food','activity','finale'];
+      const date = document.querySelector('#date');
+      const time = document.querySelector('#time');
+      const food = document.querySelector('#food-answer');
+      const activity = document.querySelector('#activity-answer');
+      const no = document.querySelector('#no');
+      const zone = document.querySelector('#choices');
+      let lastDodge = 0;
+
+      function show(id) {
+        document.querySelectorAll('.screen').forEach(screen => screen.classList.toggle('active', screen.id === id));
+        const step = order.indexOf(id) + 1;
+        document.querySelector('#step-count').textContent = String(step).padStart(2,'0') + ' / 06';
+        document.querySelectorAll('.progress i').forEach((bar,i) => bar.classList.toggle('done', i < step));
+        window.scrollTo({top:0,behavior:'instant'});
+      }
+      document.querySelector('#yes').addEventListener('click', () => show('surprise'));
+      document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', () => show(button.dataset.next)));
+      document.querySelector('#schedule-form').addEventListener('submit', event => {
+        event.preventDefault();
+        if (date.value !== '2026-09-27') { date.setCustomValidity('Please choose Sunday, September 27, 2026.'); date.reportValidity(); return; }
+        date.setCustomValidity('');
+        if (!['4:00pm','5:00pm','6:00pm','7:00pm'].includes(time.value)) { time.value = ''; time.reportValidity(); return; }
+        show('food');
+      });
+      date.addEventListener('input', () => date.setCustomValidity(''));
+      document.querySelector('#food-form').addEventListener('submit', event => { event.preventDefault(); if (!food.value.trim()) { food.setCustomValidity('Tell me what you would like to bring.'); food.reportValidity(); return; } food.setCustomValidity(''); show('activity'); });
+      document.querySelector('#activity-form').addEventListener('submit', event => { event.preventDefault(); if (!activity.value.trim()) { activity.setCustomValidity('Tell me an activity you would enjoy.'); activity.reportValidity(); return; } activity.setCustomValidity(''); renderFinal(); show('finale'); });
+      for (const input of [food,activity]) input.addEventListener('input', () => input.setCustomValidity(''));
+      function renderFinal() {
+        const when = `Sunday, September 27, 2026 at ${time.value}`;
+        document.querySelector('#final-message').textContent = `Awesome! I'll cya on ${when}. I'm acting like I'm not freaking out right neow :P`;
+        document.querySelector('#summary-when').textContent = when;
+        document.querySelector('#summary-food').textContent = food.value.trim();
+        document.querySelector('#summary-activity').textContent = activity.value.trim();
+        document.querySelector('#copy-status').textContent = '';
+      }
+      document.querySelector('#copy').addEventListener('click', async () => {
+        const message = `It's a date! 💖\nWhen: Sunday, September 27, 2026 at ${time.value}\nFood & drinks to bring: ${food.value.trim()}\nActivity idea: ${activity.value.trim()}\n\nI'm acting like I'm not freaking out right neow :P`;
+        let copied = false;
+        try { await navigator.clipboard.writeText(message); copied = true; } catch (_) {
+          const temp = document.createElement('textarea'); temp.value = message; temp.style.position = 'fixed'; temp.style.opacity = '0'; document.body.appendChild(temp); temp.select(); try { copied = document.execCommand('copy'); } catch (_) {} temp.remove();
+        }
+        const status = document.querySelector('#copy-status');
+        status.textContent = copied ? 'Copied! Paste it into our text thread 💌' : 'Copy wasn’t available here. You can select the plans above and text them to me 💌';
+      });
+
+      // The disabled button cannot activate. Its position also changes as a pointer approaches.
+      function dodge(x,y,force=false) {
+        if (!document.querySelector('#intro').classList.contains('active')) return;
+        const rect = no.getBoundingClientRect();
+        const distance = Math.hypot(x - (rect.left + rect.width/2), y - (rect.top + rect.height/2));
+        if (!force && distance > 115) return;
+        if (performance.now() - lastDodge < 135) return;
+        lastDodge = performance.now();
+        const arena = zone.getBoundingClientRect();
+        const yes = document.querySelector('#yes').getBoundingClientRect();
+        const maxX = Math.max(0,arena.width - rect.width - 14), maxY = Math.max(0,arena.height - rect.height - 14);
+        let best = null, bestScore = -Infinity;
+        for (let i=0;i<28;i++) {
+          const left = 7 + Math.random()*maxX, top = 7 + Math.random()*maxY;
+          const cx = arena.left+left+rect.width/2, cy = arena.top+top+rect.height/2;
+          const overlapsYes = cx > yes.left-25 && cx < yes.right+25 && cy > yes.top-25 && cy < yes.bottom+25;
+          const score = Math.hypot(cx-x,cy-y) - (overlapsYes ? 1000 : 0);
+          if (score > bestScore) { bestScore=score; best={left,top}; }
+        }
+        if (best) { no.style.left = `${best.left}px`; no.style.top = `${best.top}px`; }
+      }
+      document.addEventListener('pointermove', event => dodge(event.clientX,event.clientY));
+      document.addEventListener('pointerdown', event => {
+        const r = no.getBoundingClientRect();
+        if (event.clientX >= r.left-45 && event.clientX <= r.right+45 && event.clientY >= r.top-45 && event.clientY <= r.bottom+45) dodge(event.clientX,event.clientY,true);
+      }, true);
+    })();
+  </script>
+</body>
+</html>
