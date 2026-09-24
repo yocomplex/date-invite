@@ -25,6 +25,15 @@
     h1,h2 { font-family:Fraunces,Georgia,serif; font-weight:700; letter-spacing:-.045em; line-height:1.11; margin:0; } h1 { font-size:clamp(43px,7vw,68px); max-width:520px; } h2 { font-size:clamp(37px,6vw,55px); max-width:510px; }
     p { line-height:1.6; } .intro-copy { color:var(--muted); margin:18px 0 0; font-size:16px; }
     .choices { position:relative; height:192px; margin-top:28px; border:1px dashed #edcfd0; background:linear-gradient(135deg,#fff7f0,#fff0ef); border-radius:22px; touch-action:manipulation; }
+    .sticker-row { display:flex; align-items:center; gap:13px; margin-top:22px; min-height:88px; }
+    .sticker { position:relative; flex:none; width:88px; height:88px; padding:0; border:0; border-radius:50%; background:#fce5e6; box-shadow:0 7px 18px rgba(174,63,100,.13); -webkit-tap-highlight-color:transparent; }
+    .sticker img { display:block; width:100%; height:100%; object-fit:contain; transition:transform .22s ease; }
+    .sticker:hover img { transform:rotate(-9deg) scale(1.08); } .sticker:active img { transform:rotate(9deg) scale(.94); }
+    .sticker:focus-visible { outline:3px solid #a84970; outline-offset:4px; }
+    .sticker-note { color:var(--berry-deep); font-size:14px; font-weight:700; line-height:1.35; }
+    .sticker-note small { display:block; margin-top:4px; color:var(--muted); font-size:12px; font-weight:500; }
+    .heart-pop { position:absolute; left:50%; top:42%; z-index:3; pointer-events:none; font-size:20px; animation:float-heart .9s ease-out forwards; }
+    @keyframes float-heart { to { opacity:0; transform:translate(var(--x),-105px) rotate(var(--r)); } }
     button { font:inherit; cursor:pointer; }
     .pill { border:0; border-radius:100px; font-weight:700; padding:15px 25px; min-height:53px; transition:transform .18s,box-shadow .18s,background .18s; }
     .pill:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 9px 20px rgba(126,46,76,.18); } .pill:focus-visible,.back:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #a84970; outline-offset:3px; }
@@ -53,6 +62,7 @@
       <span class="eyebrow">Okay, here goes...</span><h1 id="intro-title">Will you go on a date with me?</h1>
       <p class="intro-copy">I made a whole website to ask you this. Totally normal behavior.</p>
       <div class="choices" id="choices"><button class="pill primary yes" type="button" id="yes">Yes ♡</button><button class="pill no" type="button" id="no" disabled tabindex="-1" aria-label="No, impossible to select">No</button></div>
+      <div class="sticker-row"><button type="button" class="sticker" id="sticker" aria-label="Tap the bunny sticker for a surprise"><img src="assets/bunny-sticker.svg" alt="" width="88" height="88"></button><div class="sticker-note">A tiny bit of extra luck ♡<small id="sticker-message" role="status" aria-live="polite">Psst... tap the bunny!</small></div></div>
     </section>
 
     <section class="screen" id="surprise" aria-labelledby="surprise-title">
@@ -116,6 +126,19 @@
         window.scrollTo({top:0,behavior:'instant'});
       }
       document.querySelector('#yes').addEventListener('click', () => show('surprise'));
+      let stickerTaps = 0;
+      document.querySelector('#sticker').addEventListener('click', event => {
+        const notes = ['A secret heart just for you ♡','Okay, now I’m blushing 🌷','This date is looking pretty cute ✨'];
+        document.querySelector('#sticker-message').textContent = notes[stickerTaps++ % notes.length];
+        for (let i=0; i<5; i++) {
+          const heart = document.createElement('span');
+          heart.className = 'heart-pop'; heart.textContent = i%2 ? '✦' : '♡';
+          heart.style.setProperty('--x', `${(i-2)*27}px`);
+          heart.style.setProperty('--r', `${(i-2)*18}deg`);
+          event.currentTarget.appendChild(heart);
+          heart.addEventListener('animationend', () => heart.remove(), {once:true});
+        }
+      });
       document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', () => show(button.dataset.next)));
       document.querySelector('#schedule-form').addEventListener('submit', event => {
         event.preventDefault();
